@@ -1,0 +1,58 @@
+public class MergeSort {
+
+
+    public static void merge(int[] arr, int start, int mid, int end) {
+
+        int left=start;
+        int right=mid+1;
+        int k=0;
+        int[] merged= new int[end-start+1];
+        //loop until left pointer reached mid or right pointer reaches end
+        while(left<=mid && right<=end) {
+            if(arr[left]<=arr[right]) {
+                merged[k++]=arr[left++];
+            } else {
+
+                merged[k++]=arr[right++];
+            }
+
+        }
+       //add remaining value in merged arr
+        while(left<=mid) {
+            merged[k++]=arr[left++];
+        }
+        while(right<=end) {
+            merged[k++]=arr[right++];
+        }
+
+        //loop through merged array and from start index change orginal arr value  
+        for(int i=0,j=start; i<merged.length; i++,j++) {
+            arr[j]=merged[i];
+        }
+    }
+
+    public static void mergeSort(int[] arr, int start, int end) {
+        //base case if start is greater than end stop
+        if(start>=end) {
+            return;
+        }
+        //find mid
+        int mid=start+(end-start)/2;
+       //divide left and right arr
+        mergeSort(arr,start,mid);
+        mergeSort(arr,mid+1,end);
+        //conquer
+        merge(arr,start,mid,end);
+    }
+
+    public static void main(String agrs[]) {
+
+        int[] arr= {6,5,1,0,9,2};
+        int n= arr.length-1;
+        mergeSort(arr,0,n);
+        for (int C: arr) {
+            System.out.println(C);
+        }
+    }
+
+} 
