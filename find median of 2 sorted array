@@ -1,0 +1,43 @@
+public class findMedianOfSortedList {
+
+    public static int getMedian(int[] a, int[] b, int n, int m) {
+        int i=0; //travesers a array
+        int j=0; //traverses b array
+        int m1=-1; //first median
+        int m2=-1; ///additional median if even length of final array
+
+        if((n+m)%2==0) { //incase if final merged array is even we get 2 median hence find middle value
+            for(int count=0; count<=(n+m)/2; count++) {
+                m2=m1;
+                if(i<=n&&j<=m) {
+                    m1=(a[i]>b[j])?b[j++]:a[i++];
+                } else if(i<=n) {
+                    m1=a[i++];
+                } else {
+                    m1=b[j++];
+                }
+            }
+            return (m1+m2)/2;
+        } else {
+            for(int count=0; count<=(n+m)/2; count++) {
+                if(i<=n&&j<=m) {
+                    m1=(a[i]>b[j])?b[j++]:a[i++];
+                } else if(i<=n) {
+                    m1=a[i++];
+                } else {
+                    m1=b[j++];
+                }
+            }
+            return m1;
+        }
+    }
+
+    public static void main(String[] args) {
+
+        int[] a= {1,2,3,4,5,9,16,78,89};
+        int[] b= {-2,-1,6,7,8,76};
+        int n=a.length;
+        int m =b.length;
+        System.out.println(getMedian(a,b,n,m));
+    }
+}
