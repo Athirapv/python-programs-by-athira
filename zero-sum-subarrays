@@ -1,0 +1,38 @@
+/*
+You are given an array arr[] of size n. Find the total count of sub-arrays having their sum equal to 0.
+
+Input:
+n = 6
+arr[] = {0,0,5,5,0,0}
+Output: 6
+Explanation: The 6 subarrays are 
+[0], [0], [0], [0], [0,0], and [0,0].
+
+
+*/
+import java.util.*;
+public class findSubarray{
+
+public static long findSubarray(long[] arr ,int n) 
+    {
+        long sum=0;
+        int pair=0;
+        HashMap<Long,Integer>map=new HashMap<>();
+        map.put(sum,1);
+        for(long i : arr){
+            sum=sum+i;
+            if(map.containsKey(sum)){//if sum already exists inc pair+freq and inc freq of sum
+                pair=pair+map.get(sum);
+                map.put(sum,map.get(sum)+1);
+            }
+            else{
+                map.put(sum,1);
+            }
+        }
+        return pair;
+    }
+public static void main(String[] args){
+    long[] a1={1,-2,-1,3,-4,-2,3};
+    System.out.println(findSubarray(a1,a1.length));
+}
+}
