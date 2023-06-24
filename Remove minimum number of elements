@@ -1,0 +1,33 @@
+//Remove minimum number of elements
+//Given two arrays A[] and B[] consisting of N and M elements respectively. The task is to find minimum number of elements to remove from each array such that no common element exist in both the arrays.
+ 
+import java.util.*;
+public class SubsetofArray{
+
+public static long minRemove( long a[], long b[])
+    {
+        HashMap<Long,Integer>map=new HashMap<>();
+        long repeatedCount=0;
+        for(long aItem:a){
+            if(map.containsKey(aItem)){
+                map.put(aItem,map.get(aItem)+1);
+            }
+            else{
+            map.put(aItem,1);
+            }
+        }
+        for(long bItem:b){
+            if(map.containsKey(bItem) && map.get(bItem)>0){
+              repeatedCount=repeatedCount+1; 
+              map.put(bItem,map.get(bItem)-1);
+            }
+        }
+        return repeatedCount;
+    }
+    
+public static void main(String[] args){
+    long[] a1={1,2,2,6,4};
+    long[] b1={1,2,3,4,4};;
+    System.out.println(minRemove(a1,b1));
+}
+}
