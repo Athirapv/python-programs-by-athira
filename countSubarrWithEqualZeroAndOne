@@ -1,0 +1,36 @@
+import java.util.*;
+public class countSubarrWithEqualZeroAndOne{
+
+public static int countSubarrWithEqualZeroAndOne(int arr[], int n)
+    {
+        // declare var to store subarray count and sum of items in subarray
+       
+        int pair=0;
+        int sum=0;
+        HashMap<Integer,Integer>map= new HashMap<>();
+        map.put(sum,1);
+        for(int i : arr){
+            //if 0 is encountered -1 the sum else +1
+            if(i==0){
+                sum=sum-1;
+            }
+            else{
+                sum=sum+1;
+            }
+            //checks if sum already present if present inc pair and sum frequency else put sum freq as 1
+            if(map.containsKey(sum)){
+                pair=pair+map.get(sum);
+                map.put(sum,map.get(sum)+1);
+            }
+            else{
+                map.put(sum,1);
+            }
+        }
+        return pair;
+    }
+    
+public static void main(String[] args){
+    int[] a1={0,1,1,0,0,0,1};
+    System.out.println(countSubarrWithEqualZeroAndOne(a1,a1.length));
+}
+}
