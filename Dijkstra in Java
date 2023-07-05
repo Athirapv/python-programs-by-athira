@@ -1,0 +1,88 @@
+import java.util.*;
+
+public class Dijkstra {
+
+    public static class Edge {
+        int weight;
+        int src;
+        int dest;
+        public Edge(int s, int d, int wt) {
+            this.weight=wt;
+            this.src=s;
+            this.dest=d;
+        }
+    }
+
+    public static class Pair implements Comparable<Pair> {
+        int weight;
+        int node;
+
+        public Pair(int s, int wt) {
+            this.weight=wt;
+            this.node=s;
+        }
+
+        @Override
+        public int compareTo(Pair p2) {
+            return this.weight-p2.weight; //ascending sort
+        }
+    }
+
+    public static void buildGraph(ArrayList<Edge>graph[],int v) {
+        for(int i=0; i<v; i++) {
+            graph[i]=new ArrayList<Edge>();
+        }
+        graph[0].add(new Edge(0,1,2));
+        graph[0].add(new Edge(0,2,4));
+        graph[1].add(new Edge(1,3,7));
+        graph[1].add(new Edge(1,2,1));
+        graph[2].add(new Edge(2,4,3));
+        graph[3].add(new Edge(3,5,1));
+
+        graph[4].add(new Edge(4,3,2));
+        graph[4].add(new Edge(4,5,5));
+
+
+    }
+
+    public static void DijkstraPath(ArrayList<Edge>graph[],int[] dist,boolean[] visited) {
+        PriorityQueue<Pair>queue=new PriorityQueue<Pair>();
+        queue.add(new Pair(0,0));
+        //make dist array to infinity
+        for(int i=1; i<dist.length; i++) {
+            dist[i]=10000000;
+        }
+        //BFS
+        while(!queue.isEmpty()) {
+            Pair p=queue.remove();//process shortest unvisited edge
+            if(!visited[p.node]) {
+                visited[p.node]=true;
+                for(int i=0; i<graph[p.node].size();i++) { //add curr node edges
+                    Edge e= graph[p.node].get(i);
+                    if(dist[e.src]+e.weight<dist[e.dest]) { //if v>u+wt v=u+wt
+                        dist[e.dest]=dist[e.src]+e.weight;
+                    }
+                    queue.add(new Pair(e.dest,dist[e.dest]));
+                }
+
+            }
+
+        }
+        //Print shortest path distance
+        for(int i=0; i<dist.length; i++) {
+            System.out.print(dist[i] +" ");
+        }
+        
+
+    }
+
+    public static void main(String[] args) {
+        int v=6;
+        ArrayList<Edge>graph[]=new ArrayList[v];
+        buildGraph(graph,v);
+        int[] dist= new int[v];
+        boolean[] visited=new boolean[v];
+        DijkstraPath(graph,dist,visited);
+    }
+
+}
