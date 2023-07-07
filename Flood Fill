@@ -1,0 +1,78 @@
+//{ Driver Code Starts
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class GFG {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine().trim());
+        while(T-->0) {
+            String[] S1 = br.readLine().trim().split(" ");
+            int n = Integer.parseInt(S1[0]);
+            int m = Integer.parseInt(S1[1]);
+            int[][] image =  new int[n][m];
+            for(int i = 0; i < n; i++) {
+                String[] S2 = br.readLine().trim().split(" ");
+                for(int j = 0; j < m; j++)
+                    image[i][j] = Integer.parseInt(S2[j]);
+            }
+            String[] S3 = br.readLine().trim().split(" ");
+            int sr = Integer.parseInt(S3[0]);
+            int sc = Integer.parseInt(S3[1]);
+            int newColor = Integer.parseInt(S3[2]);
+            Solution obj = new Solution();
+            int[][] ans = obj.floodFill(image, sr, sc, newColor);
+            for(int i = 0; i < ans.length; i++) {
+                for(int j = 0; j < ans[i].length; j++)
+                    System.out.print(ans[i][j] + " ");
+                System.out.println();
+            }
+        }
+    }
+}
+
+// } Driver Code Ends
+
+
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        int[][] visited=new int[image.length][image[0].length];
+        for(int i=0; i<image.length; i++) {
+            for(int j=0; j<image[0].length; j++) {
+                visited[i][j]=0;
+            }
+        }
+        int checkColor=image[sr][sc];
+        helper(image,sr,sc,newColor,checkColor,visited);
+        return image;
+    }
+    public void helper(int[][] image, int sr, int sc, int newColor,int checkColor,int[][] visited) {
+
+        image[sr][sc]=newColor;
+        visited[sr][sc]=1;
+        // left
+        if (isValid(image, sr, sc - 1,checkColor,visited)) {
+            helper(image, sr, sc - 1, newColor,checkColor,visited);
+        }
+        // right
+        if (isValid(image, sr, sc + 1,checkColor,visited)) {
+            helper(image, sr, sc + 1, newColor,checkColor,visited);
+        }
+        // up
+        if (isValid(image, sr - 1, sc,checkColor,visited)) {
+            helper(image, sr - 1, sc, newColor,checkColor,visited);
+        }
+        // down
+        if (isValid(image, sr + 1, sc,checkColor,visited)) {
+            helper(image, sr + 1, sc, newColor,checkColor,visited);
+        }
+        return;
+
+    }
+    public boolean isValid(int[][] image,int r, int c,int checkColor,int[][] visited) {
+        if(r>=0 && r<image.length && c>=0 && c<image[0].length  && image[r][c]==checkColor && visited[r][c]!=1 ) {
+            return true;
+        }
+        return false;
+    }
+}
