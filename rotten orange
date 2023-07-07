@@ -1,0 +1,100 @@
+//{ Driver Code Starts
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class GFG
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine().trim());
+        while(T-->0)
+        {
+            String[] s = br.readLine().trim().split(" ");
+            int n = Integer.parseInt(s[0]);
+            int m = Integer.parseInt(s[1]);
+            int[][] grid = new int[n][m];
+            for(int i = 0; i < n; i++){
+                String[] S = br.readLine().trim().split(" ");
+                for(int j = 0; j < m; j++){
+                    grid[i][j] = Integer.parseInt(S[j]);
+                }
+            }
+            Solution obj = new Solution();
+            int ans = obj.orangesRotting(grid);
+            System.out.println(ans);
+        }
+    }
+}
+// } Driver Code Ends
+
+
+class Solution
+{
+    public class Edge{
+        int src;
+        int dest;
+        int time;
+        public Edge(int s, int d, int time){
+            this.src=s;
+            this.dest=d;
+            this.time=time;
+        }
+    }
+    //Function to find minimum time required to rot all oranges. 
+    public int orangesRotting(int[][] grid)
+    {
+        // Code here
+        int fresh=0;
+        Queue<Edge> queue=new LinkedList<>();
+        for(int i=0; i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==2){
+                    queue.add(new Edge(i,j,0));
+                }
+                if(grid[i][j]==1){
+                    fresh=fresh+1;
+                }
+            }
+            
+        }
+        //helper to make fresh orange rotten
+        return rottenOrange(grid,queue,fresh,grid.length,grid[0].length);
+        //return time
+    }
+    
+    public int rottenOrange(int[][] grid,Queue<Edge>queue,int fresh,int r,int c){
+        int time=-1;
+        while(!queue.isEmpty()){
+            Edge e=queue.remove();
+            time=e.time>time?e.time:time;
+            
+            //left
+            if((e.src-1)>=0 && (e.src-1)<r &&(e.dest )>=0 &&(e.dest)<c && grid[e.src-1][e.dest]==1){
+                grid[e.src-1][e.dest]=2;
+                queue.add(new Edge(e.src-1,e.dest,e.time+1));
+                fresh=fresh-1;
+            }
+            //right
+            if((e.src+1)>=0 && (e.src+1)<r &&(e.dest)>=0 &&(e.dest)<c && grid[e.src+1][e.dest]==1){
+                grid[e.src+1][e.dest]=2;
+                queue.add(new Edge(e.src+1,e.dest,e.time+1));
+                fresh=fresh-1;
+            }
+            //up
+            if(e.src>=0 && e.src<r &&(e.dest-1 )>=0 &&(e.dest-1)<c && grid[e.src][e.dest-1]==1){
+                grid[e.src][e.dest-1]=2;
+                queue.add(new Edge(e.src,e.dest-1,e.time+1));
+                fresh=fresh-1;
+            }
+            //down
+            if(e.src>=0 && e.src<r &&(e.dest+1 )>=0 &&(e.dest+1)<c && grid[e.src][e.dest+1]==1){
+                grid[e.src][e.dest+1]=2;
+                queue.add(new Edge(e.src,e.dest+1,e.time+1));
+                fresh=fresh-1;
+            }
+        }
+         return fresh>0?-1:time;
+    }
+  
+}
